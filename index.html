@@ -1,0 +1,1339 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>BEZOS AI • Bezos 2.0 — Omni-Reasoning Intelligence</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-main: #0d0e12;
+            --bg-sidebar: #111319;
+            --bg-surface: #161820;
+            --bg-surface-hover: #1e212b;
+            --bg-input: #181a23;
+            --border-subtle: rgba(255, 255, 255, 0.08);
+            --border-strong: rgba(255, 255, 255, 0.15);
+            --text-primary: #f3f4f6;
+            --text-secondary: #9ca3af;
+            --text-muted: #6b7280;
+            --accent-primary: #6366f1;
+            --accent-secondary: #8b5cf6;
+            --accent-cyan: #06b6d4;
+            --user-bubble: #1e2230;
+            --code-bg: #090a0d;
+        }
+
+        body.light-theme {
+            --bg-main: #f8fafc;
+            --bg-sidebar: #f1f5f9;
+            --bg-surface: #ffffff;
+            --bg-surface-hover: #f1f5f9;
+            --bg-input: #ffffff;
+            --border-subtle: rgba(15, 23, 42, 0.08);
+            --border-strong: rgba(15, 23, 42, 0.16);
+            --text-primary: #0f172a;
+            --text-secondary: #475569;
+            --text-muted: #64748b;
+            --accent-primary: #4f46e5;
+            --accent-secondary: #7c3aed;
+            --accent-cyan: #0891b2;
+            --user-bubble: #eef2ff;
+            --code-bg: #111827;
+        }
+
+        * {
+            box-sizing: border-box;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-main);
+            color: var(--text-primary);
+            transition: background-color 0.25s ease, color 0.25s ease;
+            height: 100vh;
+            height: 100dvh;
+            overflow: hidden;
+        }
+
+        /* Custom Scrollbars */
+        ::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: rgba(139, 92, 246, 0.25);
+            border-radius: 9999px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: rgba(139, 92, 246, 0.45);
+        }
+
+        .bg-sidebar-custom {
+            background-color: var(--bg-sidebar);
+            border-right: 1px solid var(--border-subtle);
+        }
+        .bg-surface-custom {
+            background-color: var(--bg-surface);
+            border: 1px solid var(--border-subtle);
+        }
+        .bg-surface-hover:hover {
+            background-color: var(--bg-surface-hover);
+        }
+        .bg-input-custom {
+            background-color: var(--bg-input);
+            border: 1px solid var(--border-strong);
+        }
+        .border-subtle {
+            border-color: var(--border-subtle);
+        }
+        .text-primary-custom {
+            color: var(--text-primary);
+        }
+        .text-secondary-custom {
+            color: var(--text-secondary);
+        }
+        .text-muted-custom {
+            color: var(--text-muted);
+        }
+
+        /* Gradient Text & Glows */
+        .bezos-gradient-text {
+            background: linear-gradient(135deg, #818cf8 0%, #c084fc 50%, #22d3ee 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        .bezos-gradient-bg {
+            background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 55%, #06b6d4 100%);
+        }
+        .bezos-glow {
+            box-shadow: 0 8px 28px -6px rgba(99, 102, 241, 0.42);
+        }
+
+        /* Markdown & Prose Formatting */
+        .prose-bezos {
+            font-size: 0.95rem;
+            line-height: 1.72;
+            word-break: break-word;
+        }
+        .prose-bezos p {
+            margin-bottom: 0.75rem;
+        }
+        .prose-bezos p:last-child {
+            margin-bottom: 0;
+        }
+        .prose-bezos h1, .prose-bezos h2, .prose-bezos h3 {
+            font-weight: 700;
+            margin-top: 1.1rem;
+            margin-bottom: 0.5rem;
+            color: var(--text-primary);
+        }
+        .prose-bezos h1 { font-size: 1.3rem; }
+        .prose-bezos h2 { font-size: 1.15rem; }
+        .prose-bezos h3 { font-size: 1.02rem; }
+        .prose-bezos ul {
+            list-style-type: disc;
+            padding-left: 1.4rem;
+            margin-bottom: 0.75rem;
+        }
+        .prose-bezos ol {
+            list-style-type: decimal;
+            padding-left: 1.4rem;
+            margin-bottom: 0.75rem;
+        }
+        .prose-bezos li {
+            margin-bottom: 0.3rem;
+        }
+        .prose-bezos blockquote {
+            border-left: 3px solid #8b5cf6;
+            padding: 0.35rem 0.9rem;
+            margin: 0.75rem 0;
+            background: rgba(139, 92, 246, 0.08);
+            border-radius: 0 0.5rem 0.5rem 0;
+            color: var(--text-secondary);
+            font-style: italic;
+        }
+        .prose-bezos code.inline-code {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.84em;
+            background: rgba(139, 92, 246, 0.14);
+            color: #c084fc;
+            padding: 0.15rem 0.4rem;
+            border-radius: 0.375rem;
+            border: 1px solid rgba(139, 92, 246, 0.25);
+        }
+        body.light-theme .prose-bezos code.inline-code {
+            color: #6d28d9;
+            background: rgba(109, 40, 217, 0.08);
+        }
+
+        /* Code Block Container */
+        .code-block-wrapper {
+            margin: 0.9rem 0;
+            border-radius: 0.75rem;
+            overflow: hidden;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            background-color: var(--code-bg);
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.4);
+        }
+        .code-block-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0.5rem 0.9rem;
+            background: rgba(255, 255, 255, 0.04);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.75rem;
+            color: #9ca3af;
+        }
+        .code-block-wrapper pre {
+            margin: 0;
+            padding: 0.95rem 1rem;
+            overflow-x: auto;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.83rem;
+            line-height: 1.6;
+            color: #e5e7eb;
+        }
+        .code-block-wrapper code {
+            font-family: 'JetBrains Mono', monospace;
+        }
+
+        /* Animations */
+        @keyframes fadeSlideUp {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .animate-msg {
+            animation: fadeSlideUp 0.28s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        }
+        @keyframes pulseRing {
+            0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(34, 197, 94, 0.7); }
+            70% { transform: scale(1); box-shadow: 0 0 0 6px rgba(34, 197, 94, 0); }
+            100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(34, 197, 94, 0); }
+        }
+        .online-dot {
+            animation: pulseRing 2s infinite;
+        }
+        .typing-dot {
+            width: 7px;
+            height: 7px;
+            border-radius: 50%;
+            background: #8b5cf6;
+            animation: bounceDot 1.2s infinite ease-in-out;
+        }
+        .typing-dot:nth-child(2) { animation-delay: 0.15s; background: #6366f1; }
+        .typing-dot:nth-child(3) { animation-delay: 0.3s; background: #06b6d4; }
+        @keyframes bounceDot {
+            0%, 80%, 100% { transform: translateY(0); opacity: 0.45; }
+            40% { transform: translateY(-5px); opacity: 1; }
+        }
+    </style>
+</head>
+<body class="flex w-screen h-screen overflow-hidden">
+
+    <!-- Mobile Sidebar Backdrop -->
+    <div id="sidebarBackdrop" onclick="toggleSidebar(false)" class="fixed inset-0 bg-black/60 backdrop-blur-xs z-30 hidden lg:hidden transition-opacity"></div>
+
+    <!-- ==========================================
+         1. COLLAPSIBLE LEFT SIDEBAR
+         ========================================== -->
+    <aside id="sidebar" class="bg-sidebar-custom fixed lg:static inset-y-0 left-0 z-40 w-72 flex flex-col justify-between p-3.5 transform -translate-x-full lg:translate-x-0 transition-transform duration-300 ease-out shrink-0">
+        
+        <!-- Top Brand & New Chat -->
+        <div class="flex flex-col gap-3">
+            <!-- Brand Header -->
+            <div class="flex items-center justify-between px-1.5 pt-1">
+                <div class="flex items-center gap-2.5">
+                    <div class="w-9 h-9 rounded-xl bezos-gradient-bg bezos-glow flex items-center justify-center text-white shadow-lg shrink-0">
+                        <!-- Geometric Crown / Spark SVG -->
+                        <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z"/>
+                        </svg>
+                    </div>
+                    <div>
+                        <div class="flex items-center gap-1.5">
+                            <span class="font-extrabold text-base tracking-tight text-primary-custom">BEZOS AI</span>
+                            <span class="px-1.5 py-0.5 text-[10px] font-bold uppercase tracking-wider rounded-md bg-indigo-500/20 text-indigo-400 border border-indigo-500/30">Bezos 2.0</span>
+                        </div>
+                        <p class="text-[11px] text-muted-custom">Universal Intelligence</p>
+                    </div>
+                </div>
+                <button onclick="toggleSidebar(false)" class="lg:hidden p-1.5 rounded-lg text-secondary-custom hover:text-primary-custom bg-surface-hover">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+                </button>
+            </div>
+
+            <!-- + New Chat Button -->
+            <button onclick="createNewChat()" class="w-full py-2.5 px-3.5 rounded-xl bezos-gradient-bg bezos-glow text-white font-semibold text-sm flex items-center justify-center gap-2 hover:opacity-95 active:scale-[0.98] transition-all cursor-pointer">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M12 4v16m8-8H4"/></svg>
+                <span>New Chat</span>
+            </button>
+
+            <!-- Live Search Bar -->
+            <div class="relative">
+                <svg class="w-4 h-4 text-muted-custom absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
+                <input id="historySearch" type="text" oninput="renderHistoryList()" placeholder="Search conversations..." 
+                    class="w-full pl-9 pr-3 py-2 rounded-xl bg-surface-custom text-xs text-primary-custom placeholder-gray-500 focus:outline-none focus:border-indigo-500 transition-colors">
+            </div>
+        </div>
+
+        <!-- Middle Persistent Chat History -->
+        <div class="flex-1 overflow-y-auto my-3 pr-1">
+            <div class="flex items-center justify-between px-2 mb-1.5">
+                <span class="text-[10px] font-bold uppercase tracking-widest text-muted-custom">Saved Conversations</span>
+                <button onclick="clearAllChats()" class="text-[10px] text-muted-custom hover:text-red-400 transition-colors cursor-pointer" title="Clear all saved chats">Clear All</button>
+            </div>
+            <div id="historyList" class="flex flex-col gap-1">
+                <!-- Populated dynamically -->
+            </div>
+        </div>
+
+        <!-- Bottom Sidebar Controls & User Profile -->
+        <div class="pt-2.5 border-t border-subtle flex flex-col gap-1.5">
+            <div class="grid grid-cols-2 gap-1.5">
+                <button onclick="toggleTheme()" class="py-2 px-2.5 rounded-xl bg-surface-custom bg-surface-hover text-xs font-medium text-secondary-custom hover:text-primary-custom flex items-center justify-center gap-1.5 transition-colors cursor-pointer">
+                    <span id="themeIcon">☀️</span>
+                    <span id="themeLabel">Light Mode</span>
+                </button>
+                <button onclick="exportCurrentChat()" class="py-2 px-2.5 rounded-xl bg-surface-custom bg-surface-hover text-xs font-medium text-secondary-custom hover:text-primary-custom flex items-center justify-center gap-1.5 transition-colors cursor-pointer">
+                    <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/></svg>
+                    <span>Export Chat</span>
+                </button>
+            </div>
+
+            <!-- User Profile Card -->
+            <div class="mt-1 p-2.5 rounded-xl bg-surface-custom flex items-center gap-2.5">
+                <div class="w-8 h-8 rounded-full bg-gradient-to-tr from-indigo-500 via-purple-500 to-cyan-400 flex items-center justify-center text-white font-bold text-xs shrink-0">
+                    BU
+                </div>
+                <div class="min-w-0 flex-1">
+                    <p class="text-xs font-semibold text-primary-custom truncate">BEZOS User</p>
+                    <div class="flex items-center gap-1.5">
+                        <span class="w-2 h-2 rounded-full bg-emerald-500 online-dot"></span>
+                        <p class="text-[10px] font-medium text-emerald-400 truncate">Bezos 2.0 Online</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </aside>
+
+    <!-- ==========================================
+         MAIN WORKSPACE AREA
+         ========================================== -->
+    <main class="flex-1 flex flex-col min-w-0 h-full relative">
+
+        <!-- 2. TOP HEADER BAR -->
+        <header class="h-14 px-3 sm:px-6 border-b border-subtle flex items-center justify-between shrink-0 bg-opacity-80 backdrop-blur-md z-20">
+            <div class="flex items-center gap-2.5">
+                <!-- Mobile Drawer Toggle -->
+                <button onclick="toggleSidebar(true)" class="lg:hidden p-2 rounded-xl bg-surface-custom bg-surface-hover text-secondary-custom hover:text-primary-custom cursor-pointer">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg>
+                </button>
+
+                <!-- Interactive Model / Persona Selector Dropdown -->
+                <div class="relative">
+                    <button id="modelSelectorBtn" onclick="toggleModelMenu()" class="px-3 py-1.5 rounded-xl bg-surface-custom bg-surface-hover flex items-center gap-2 text-xs sm:text-sm font-semibold text-primary-custom transition-all cursor-pointer">
+                        <span class="w-2 h-2 rounded-full bg-emerald-500 online-dot shrink-0"></span>
+                        <span id="selectedModelLabel" class="truncate max-w-[180px] sm:max-w-none">Bezos 2.0 • Omni-Reasoning</span>
+                        <span class="hidden sm:inline-block px-1.5 py-0.5 text-[9px] font-bold uppercase rounded bg-emerald-500/15 text-emerald-400 border border-emerald-500/30">ONLINE</span>
+                        <svg class="w-3.5 h-3.5 text-secondary-custom" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+                    </button>
+
+                    <!-- Dropdown Menu -->
+                    <div id="modelDropdown" class="hidden absolute left-0 mt-2 w-72 rounded-2xl bg-surface-custom shadow-2xl p-1.5 z-50 border border-subtle">
+                        <button onclick="selectModel('omni', 'Bezos 2.0 • Omni-Reasoning')" class="w-full text-left p-2.5 rounded-xl bg-surface-hover flex items-start gap-2.5 transition-colors cursor-pointer">
+                            <span class="text-base mt-0.5">🧠</span>
+                            <div>
+                                <p class="text-xs font-bold text-primary-custom">Bezos 2.0 • Omni-Reasoning</p>
+                                <p class="text-[11px] text-secondary-custom">Balanced all-world intelligence for any topic</p>
+                            </div>
+                        </button>
+                        <button onclick="selectModel('fast', 'Bezos 2.0 • Turbo Fast')" class="w-full text-left p-2.5 rounded-xl bg-surface-hover flex items-start gap-2.5 transition-colors cursor-pointer">
+                            <span class="text-base mt-0.5">⚡</span>
+                            <div>
+                                <p class="text-xs font-bold text-primary-custom">Bezos 2.0 • Turbo Fast</p>
+                                <p class="text-[11px] text-secondary-custom">Crisp, concise, ultra-rapid answers</p>
+                            </div>
+                        </button>
+                        <button onclick="selectModel('deep', 'Bezos 2.0 • Deep Think')" class="w-full text-left p-2.5 rounded-xl bg-surface-hover flex items-start gap-2.5 transition-colors cursor-pointer">
+                            <span class="text-base mt-0.5">🔬</span>
+                            <div>
+                                <p class="text-xs font-bold text-primary-custom">Bezos 2.0 • Deep Think</p>
+                                <p class="text-[11px] text-secondary-custom">First-principles analytical depth & research</p>
+                            </div>
+                        </button>
+                        <button onclick="selectModel('code', 'Bezos 2.0 • Code & Maths')" class="w-full text-left p-2.5 rounded-xl bg-surface-hover flex items-start gap-2.5 transition-colors cursor-pointer">
+                            <span class="text-base mt-0.5">💻</span>
+                            <div>
+                                <p class="text-xs font-bold text-primary-custom">Bezos 2.0 • Code & Maths</p>
+                                <p class="text-[11px] text-secondary-custom">Step-by-step proofs & production engineering</p>
+                            </div>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right Quick Actions -->
+            <div class="flex items-center gap-1.5 sm:gap-2">
+                <button onclick="toggleAutoSpeak()" id="btnAutoSpeak" title="Toggle Auto Read-Aloud TTS" class="p-2 rounded-xl bg-surface-custom bg-surface-hover text-secondary-custom hover:text-primary-custom transition-colors cursor-pointer">
+                    <span id="autoSpeakIcon" class="text-sm">🔇</span>
+                </button>
+                <button onclick="shareAppLink()" title="Copy Share Link" class="p-2 rounded-xl bg-surface-custom bg-surface-hover text-secondary-custom hover:text-primary-custom transition-colors cursor-pointer">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z"/></svg>
+                </button>
+                <button onclick="createNewChat()" title="New Chat" class="p-2 rounded-xl bg-surface-custom bg-surface-hover text-secondary-custom hover:text-primary-custom transition-colors cursor-pointer">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/></svg>
+                </button>
+            </div>
+        </header>
+
+        <!-- 3. MAIN CHAT STAGE -->
+        <div id="chatScrollContainer" class="flex-1 overflow-y-auto px-3 sm:px-6 py-6 scroll-smooth">
+            <div class="max-w-3xl mx-auto w-full">
+
+                <!-- Welcome Hero Screen -->
+                <div id="welcomeHero" class="py-6 sm:py-12 flex flex-col items-center text-center animate-msg">
+                    <div class="w-16 h-16 rounded-2xl bezos-gradient-bg bezos-glow flex items-center justify-center text-white mb-5 shadow-xl">
+                        <svg class="w-8 h-8" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z"/>
+                        </svg>
+                    </div>
+
+                    <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-surface-custom text-xs font-medium text-secondary-custom mb-3">
+                        <span class="w-2 h-2 rounded-full bg-emerald-500 online-dot"></span>
+                        <span>Bezos 2.0 Live Online Engine</span>
+                    </div>
+
+                    <h1 class="text-3xl sm:text-4xl font-extrabold tracking-tight text-primary-custom mb-3">
+                        Hello, I'm <span class="bezos-gradient-text">BEZOS AI</span>
+                    </h1>
+
+                    <p class="text-sm sm:text-base text-secondary-custom max-w-xl leading-relaxed mb-8">
+                        Powered by <strong class="text-primary-custom">Bezos 2.0</strong> — Ask me anything in the world, from advanced mathematics and full-stack coding to science, history, business, and everyday advice.
+                    </p>
+
+                    <!-- 2x2 Grid of Rich Interactive Prompt Starter Cards -->
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 w-full text-left">
+                        <button onclick="useStarterPrompt('Explain quantum computing and how qubits differ from classical bits, using a simple real-world analogy.')" 
+                            class="p-4 rounded-2xl bg-surface-custom bg-surface-hover transition-all duration-200 hover:-translate-y-0.5 hover:border-indigo-500/40 group cursor-pointer">
+                            <div class="flex items-center justify-between mb-1.5">
+                                <span class="text-lg">⚛️</span>
+                                <span class="text-[11px] font-semibold text-indigo-400 opacity-0 group-hover:opacity-100 transition-opacity">Ask Bezos 2.0 →</span>
+                            </div>
+                            <h3 class="text-sm font-bold text-primary-custom mb-1">Quantum Computing Explained</h3>
+                            <p class="text-xs text-secondary-custom line-clamp-2">Understand qubits, superposition, and real-world applications simply.</p>
+                        </button>
+
+                        <button onclick="useStarterPrompt('Write a clean, responsive Python FastAPI backend endpoint with JWT authentication and explain each part.')" 
+                            class="p-4 rounded-2xl bg-surface-custom bg-surface-hover transition-all duration-200 hover:-translate-y-0.5 hover:border-purple-500/40 group cursor-pointer">
+                            <div class="flex items-center justify-between mb-1.5">
+                                <span class="text-lg">💻</span>
+                                <span class="text-[11px] font-semibold text-purple-400 opacity-0 group-hover:opacity-100 transition-opacity">Ask Bezos 2.0 →</span>
+                            </div>
+                            <h3 class="text-sm font-bold text-primary-custom mb-1">Full-Stack Code Architect</h3>
+                            <p class="text-xs text-secondary-custom line-clamp-2">Build a production Python FastAPI endpoint with JWT authentication.</p>
+                        </button>
+
+                        <button onclick="useStarterPrompt('Solve this step-by-step: If 3x^2 - 12x + 9 = 0, find the roots using factoring and the quadratic formula, and verify the solution.')" 
+                            class="p-4 rounded-2xl bg-surface-custom bg-surface-hover transition-all duration-200 hover:-translate-y-0.5 hover:border-cyan-500/40 group cursor-pointer">
+                            <div class="flex items-center justify-between mb-1.5">
+                                <span class="text-lg">📐</span>
+                                <span class="text-[11px] font-semibold text-cyan-400 opacity-0 group-hover:opacity-100 transition-opacity">Ask Bezos 2.0 →</span>
+                            </div>
+                            <h3 class="text-sm font-bold text-primary-custom mb-1">Step-by-Step Mathematics</h3>
+                            <p class="text-xs text-secondary-custom line-clamp-2">Solve quadratic equations with complete algebraic proofs & verification.</p>
+                        </button>
+
+                        <button onclick="useStarterPrompt('Create a 30-day high-impact startup launch blueprint for a modern digital business with zero wasted budget.')" 
+                            class="p-4 rounded-2xl bg-surface-custom bg-surface-hover transition-all duration-200 hover:-translate-y-0.5 hover:border-emerald-500/40 group cursor-pointer">
+                            <div class="flex items-center justify-between mb-1.5">
+                                <span class="text-lg">🚀</span>
+                                <span class="text-[11px] font-semibold text-emerald-400 opacity-0 group-hover:opacity-100 transition-opacity">Ask Bezos 2.0 →</span>
+                            </div>
+                            <h3 class="text-sm font-bold text-primary-custom mb-1">Startup & Business Strategy</h3>
+                            <p class="text-xs text-secondary-custom line-clamp-2">30-day lean launch blueprint for scaling a modern digital venture.</p>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Messages Feed -->
+                <div id="messagesFeed" class="flex flex-col gap-6 pb-4"></div>
+
+            </div>
+        </div>
+
+        <!-- 4. BOTTOM INPUT COMPOSER -->
+        <div class="px-3 sm:px-6 pb-3 pt-2 shrink-0">
+            <div class="max-w-3xl mx-auto w-full">
+
+                <!-- Floating Stop Generating Bar (Shown while streaming) -->
+                <div id="stopGeneratingBar" class="hidden justify-center mb-2.5">
+                    <button onclick="stopGeneration()" class="px-4 py-1.5 rounded-full bg-surface-custom border border-red-500/40 text-xs font-semibold text-red-400 hover:bg-red-500/10 flex items-center gap-2 shadow-lg transition-all cursor-pointer">
+                        <span class="w-2.5 h-2.5 rounded-xs bg-red-500 inline-block"></span>
+                        <span>Stop Generating</span>
+                    </button>
+                </div>
+
+                <!-- Attachment Preview Pill -->
+                <div id="attachmentPreview" class="hidden mb-2 p-2.5 rounded-xl bg-surface-custom flex items-center justify-between gap-3">
+                    <div class="flex items-center gap-2.5 min-w-0">
+                        <img id="attachmentThumb" class="hidden w-10 h-10 rounded-lg object-cover border border-subtle" alt="Attached preview">
+                        <div id="attachmentFileBadge" class="w-9 h-9 rounded-lg bg-indigo-500/20 text-indigo-400 flex items-center justify-center font-bold text-xs shrink-0">FILE</div>
+                        <div class="min-w-0">
+                            <p id="attachmentName" class="text-xs font-semibold text-primary-custom truncate">document.txt</p>
+                            <p id="attachmentMeta" class="text-[10px] text-secondary-custom">Ready to analyze with Bezos 2.0</p>
+                        </div>
+                    </div>
+                    <button onclick="clearAttachment()" class="p-1.5 rounded-lg text-secondary-custom hover:text-red-400 bg-surface-hover cursor-pointer" title="Remove attachment">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+                    </button>
+                </div>
+
+                <!-- Main Composer Box -->
+                <div class="bg-input-custom rounded-2xl p-2 pl-3 shadow-xl focus-within:border-indigo-500 transition-colors flex items-end gap-2">
+                    <!-- Hidden File Input -->
+                    <input type="file" id="fileInput" class="hidden" accept=".txt,.md,.js,.py,.html,.css,.json,.csv,.java,.cpp,.ts,image/*" onchange="handleFileSelect(event)">
+                    
+                    <!-- Attach File/Image Button -->
+                    <button onclick="document.getElementById('fileInput').click()" title="Attach code, text file, or image" 
+                        class="p-2.5 rounded-xl text-secondary-custom hover:text-primary-custom bg-surface-hover transition-colors shrink-0 cursor-pointer">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.172 7l-6.586 6.586a2 2 0 102.828 2.828l6.414-6.586a4 4 0 00-5.656-5.656l-6.415 6.585a6 6 0 108.486 8.486L20.5 13"/></svg>
+                    </button>
+
+                    <!-- Auto-Expanding Textarea -->
+                    <textarea id="promptInput" rows="1" placeholder="Ask BEZOS AI (Bezos 2.0) anything in the world..."
+                        oninput="autoResizeTextarea(this)" onkeydown="handleComposerKeydown(event)"
+                        class="flex-1 bg-transparent border-none outline-none resize-none max-h-40 py-2.5 text-sm sm:text-[15px] text-primary-custom placeholder-gray-500 leading-relaxed"></textarea>
+
+                    <!-- Voice Input Button -->
+                    <button id="voiceBtn" onclick="toggleVoiceInput()" title="Voice Input" 
+                        class="p-2.5 rounded-xl text-secondary-custom hover:text-primary-custom bg-surface-hover transition-colors shrink-0 cursor-pointer">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11a7 7 0 01-7 7m0 0a7 7 0 01-7-7m7 7v4m0 0H8m4 0h4m-4-8a3 3 0 01-3-3V5a3 3 0 116 0v6a3 3 0 01-3 3z"/></svg>
+                    </button>
+
+                    <!-- Send Button -->
+                    <button id="sendBtn" onclick="sendMessage()" title="Send Message"
+                        class="p-2.5 rounded-xl bezos-gradient-bg bezos-glow text-white font-bold hover:opacity-95 active:scale-95 disabled:opacity-40 transition-all shrink-0 cursor-pointer">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.4" d="M5 12h14M12 5l7 7-7 7"/></svg>
+                    </button>
+                </div>
+
+                <!-- Disclaimer Footer -->
+                <p class="text-center text-[11px] text-muted-custom mt-2">
+                    BEZOS AI (Bezos 2.0) • Live Online Intelligence • Verify important facts.
+                </p>
+            </div>
+        </div>
+    </main>
+
+    <!-- Toast Notification -->
+    <div id="toastBanner" class="fixed bottom-24 left-1/2 -translate-x-1/2 z-50 px-4 py-2 rounded-full bg-gray-900 text-white text-xs font-semibold shadow-2xl border border-indigo-500/40 opacity-0 pointer-events-none transition-all duration-300">
+        Notification
+    </div>
+
+    <script>
+        // ==========================================
+        // STATE & CONFIGURATION
+        // ==========================================
+        const apiKey = ""; // Provided automatically in runtime environment
+        const GEMINI_ENDPOINT = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${apiKey}`;
+
+        let chats = JSON.parse(localStorage.getItem('bezos_ai_v2_chats') || '[]');
+        let activeChatId = null;
+        let currentModelMode = 'omni';
+        let isGenerating = false;
+        let abortGenerationFlag = false;
+        let autoSpeakEnabled = false;
+        let attachedContext = null; // { name, type, textContent, imageBase64, mimeType }
+
+        const MODEL_PERSONAS = {
+            omni: "You are BEZOS AI running version Bezos 2.0 (Omni-Reasoning mode), a brilliant, helpful, and deeply knowledgeable AI collaborator capable of answering any question in the world accurately, clearly, and thoroughly. Use clean Markdown formatting, clear headings, bullet points, and well-commented code blocks when appropriate.",
+            fast: "You are BEZOS AI running version Bezos 2.0 (Turbo Fast mode). Deliver crisp, direct, high-signal, accurate answers quickly without unnecessary fluff, while preserving complete clarity.",
+            deep: "You are BEZOS AI running version Bezos 2.0 (Deep Think mode). Analyze the user's question from first principles, explore nuances, edge cases, historical/scientific context, and provide an authoritative, comprehensive breakdown.",
+            code: "You are BEZOS AI running version Bezos 2.0 (Code & Maths Specialist mode). Provide rigorous step-by-step mathematical proofs and clean, production-grade, well-commented code with clear architectural explanations."
+        };
+
+        // ==========================================
+        // INITIALIZATION & THEME
+        // ==========================================
+        window.addEventListener('DOMContentLoaded', () => {
+            const savedTheme = localStorage.getItem('bezos_ai_theme');
+            if (savedTheme === 'light') {
+                document.body.classList.add('light-theme');
+                document.getElementById('themeIcon').textContent = '🌙';
+                document.getElementById('themeLabel').textContent = 'Dark Mode';
+            }
+
+            renderHistoryList();
+            if (chats.length > 0) {
+                loadChat(chats[0].id);
+            }
+            document.getElementById('promptInput').focus();
+        });
+
+        function showToast(msg) {
+            const el = document.getElementById('toastBanner');
+            el.textContent = msg;
+            el.classList.remove('opacity-0', 'translate-y-2');
+            el.classList.add('opacity-100', 'translate-y-0');
+            clearTimeout(el._timer);
+            el._timer = setTimeout(() => {
+                el.classList.remove('opacity-100', 'translate-y-0');
+                el.classList.add('opacity-0', 'translate-y-2');
+            }, 2400);
+        }
+
+        function toggleTheme() {
+            const isLight = document.body.classList.toggle('light-theme');
+            localStorage.setItem('bezos_ai_theme', isLight ? 'light' : 'dark');
+            document.getElementById('themeIcon').textContent = isLight ? '🌙' : '☀️';
+            document.getElementById('themeLabel').textContent = isLight ? 'Dark Mode' : 'Light Mode';
+            showToast(isLight ? 'Switched to Light Mode ☀️' : 'Switched to Dark Mode 🌙');
+        }
+
+        function toggleSidebar(forceOpen) {
+            const sidebar = document.getElementById('sidebar');
+            const backdrop = document.getElementById('sidebarBackdrop');
+            const shouldOpen = typeof forceOpen === 'boolean' ? forceOpen : sidebar.classList.contains('-translate-x-full');
+
+            if (shouldOpen) {
+                sidebar.classList.remove('-translate-x-full');
+                backdrop.classList.remove('hidden');
+            } else {
+                sidebar.classList.add('-translate-x-full');
+                backdrop.classList.add('hidden');
+            }
+        }
+
+        function toggleModelMenu() {
+            document.getElementById('modelDropdown').classList.toggle('hidden');
+        }
+
+        function selectModel(mode, label) {
+            currentModelMode = mode;
+            document.getElementById('selectedModelLabel').textContent = label;
+            document.getElementById('modelDropdown').classList.add('hidden');
+            showToast(`Switched to ${label}`);
+        }
+
+        window.addEventListener('click', (e) => {
+            if (!e.target.closest('#modelSelectorBtn') && !e.target.closest('#modelDropdown')) {
+                document.getElementById('modelDropdown').classList.add('hidden');
+            }
+        });
+
+        function toggleAutoSpeak() {
+            autoSpeakEnabled = !autoSpeakEnabled;
+            document.getElementById('autoSpeakIcon').textContent = autoSpeakEnabled ? '🔊' : '🔇';
+            if (!autoSpeakEnabled && 'speechSynthesis' in window) {
+                window.speechSynthesis.cancel();
+            }
+            showToast(autoSpeakEnabled ? 'Auto Read-Aloud Enabled 🔊' : 'Auto Read-Aloud Muted 🔇');
+        }
+
+        function shareAppLink() {
+            const ta = document.createElement('textarea');
+            ta.value = window.location.href;
+            document.body.appendChild(ta);
+            ta.select();
+            document.execCommand('copy');
+            document.body.removeChild(ta);
+            showToast('BEZOS AI link copied to clipboard 🔗');
+        }
+
+        // ==========================================
+        // CHAT STORAGE & SIDEBAR HISTORY
+        // ==========================================
+        function saveChatsToStorage() {
+            localStorage.setItem('bezos_ai_v2_chats', JSON.stringify(chats));
+            renderHistoryList();
+        }
+
+        function createNewChat() {
+            if (isGenerating) stopGeneration();
+            activeChatId = Date.now().toString();
+            chats.unshift({
+                id: activeChatId,
+                title: 'New Conversation',
+                updatedAt: Date.now(),
+                messages: []
+            });
+            saveChatsToStorage();
+            document.getElementById('messagesFeed').innerHTML = '';
+            document.getElementById('welcomeHero').classList.remove('hidden');
+            clearAttachment();
+            toggleSidebar(false);
+            document.getElementById('promptInput').focus();
+        }
+
+        function loadChat(chatId) {
+            if (isGenerating) stopGeneration();
+            const chat = chats.find(c => c.id === chatId);
+            if (!chat) return;
+
+            activeChatId = chat.id;
+            renderHistoryList();
+
+            const feed = document.getElementById('messagesFeed');
+            const hero = document.getElementById('welcomeHero');
+            feed.innerHTML = '';
+
+            if (chat.messages.length === 0) {
+                hero.classList.remove('hidden');
+            } else {
+                hero.classList.add('hidden');
+                chat.messages.forEach((m, idx) => {
+                    appendMessageElement(m.role, m.content, m.attachmentName || null, idx);
+                });
+            }
+            toggleSidebar(false);
+            scrollToBottom();
+        }
+
+        function deleteSingleChat(e, chatId) {
+            e.stopPropagation();
+            chats = chats.filter(c => c.id !== chatId);
+            if (activeChatId === chatId) {
+                activeChatId = null;
+                document.getElementById('messagesFeed').innerHTML = '';
+                document.getElementById('welcomeHero').classList.remove('hidden');
+            }
+            saveChatsToStorage();
+            showToast('Conversation deleted');
+        }
+
+        function clearAllChats() {
+            chats = [];
+            activeChatId = null;
+            saveChatsToStorage();
+            document.getElementById('messagesFeed').innerHTML = '';
+            document.getElementById('welcomeHero').classList.remove('hidden');
+            showToast('All saved conversations cleared');
+        }
+
+        function renderHistoryList() {
+            const container = document.getElementById('historyList');
+            const query = (document.getElementById('historySearch').value || '').toLowerCase().trim();
+            container.innerHTML = '';
+
+            const filtered = chats.filter(c => c.title.toLowerCase().includes(query));
+
+            if (filtered.length === 0) {
+                container.innerHTML = `<p class="text-xs text-muted-custom text-center py-6 px-2">${query ? 'No matching chats found.' : 'No saved chats yet. Start asking anything!'}</p>`;
+                return;
+            }
+
+            filtered.forEach(chat => {
+                const isActive = chat.id === activeChatId;
+                const item = document.createElement('div');
+                item.onclick = () => loadChat(chat.id);
+                item.className = `group flex items-center justify-between gap-2 px-2.5 py-2 rounded-xl text-xs cursor-pointer transition-colors ${isActive ? 'bg-indigo-500/15 text-primary-custom font-semibold border border-indigo-500/30' : 'text-secondary-custom bg-surface-hover hover:text-primary-custom'}`;
+                
+                item.innerHTML = `
+                    <div class="flex items-center gap-2 min-w-0">
+                        <svg class="w-3.5 h-3.5 shrink-0 ${isActive ? 'text-indigo-400' : 'text-muted-custom'}" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z"/></svg>
+                        <span class="truncate">${escapeHtml(chat.title)}</span>
+                    </div>
+                    <button onclick="deleteSingleChat(event, '${chat.id}')" class="opacity-0 group-hover:opacity-100 p-1 rounded hover:text-red-400 transition-opacity" title="Delete chat">
+                        <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/></svg>
+                    </button>
+                `;
+                container.appendChild(item);
+            });
+        }
+
+        function exportCurrentChat() {
+            const chat = chats.find(c => c.id === activeChatId);
+            if (!chat || chat.messages.length === 0) {
+                showToast('Nothing to export yet!');
+                return;
+            }
+            let md = `# BEZOS AI (Bezos 2.0) — ${chat.title}\n\n`;
+            chat.messages.forEach(m => {
+                md += `### ${m.role === 'user' ? 'User' : 'BEZOS AI (Bezos 2.0)'}\n${m.content}\n\n---\n\n`;
+            });
+            const blob = new Blob([md], { type: 'text/markdown;charset=utf-8' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `bezos-ai-${chat.id}.md`;
+            a.click();
+            URL.revokeObjectURL(url);
+            showToast('Exported conversation as Markdown 📄');
+        }
+
+        // ==========================================
+        // FILE / IMAGE ATTACHMENT HANDLING
+        // ==========================================
+        function handleFileSelect(event) {
+            const file = event.target.files?.[0];
+            if (!file) return;
+
+            const previewBox = document.getElementById('attachmentPreview');
+            const thumb = document.getElementById('attachmentThumb');
+            const badge = document.getElementById('attachmentFileBadge');
+            document.getElementById('attachmentName').textContent = file.name;
+            document.getElementById('attachmentMeta').textContent = `${(file.size / 1024).toFixed(1)} KB • Ready for Bezos 2.0`;
+
+            if (file.type.startsWith('image/')) {
+                const reader = new FileReader();
+                reader.onload = (e) => {
+                    const dataUrl = e.target.result;
+                    const base64Data = dataUrl.split(',')[1];
+                    attachedContext = {
+                        name: file.name,
+                        type: 'image',
+                        imageBase64: base64Data,
+                        mimeType: file.type
+                    };
+                    thumb.src = dataUrl;
+                    thumb.classList.remove('hidden');
+                    badge.classList.add('hidden');
+                    previewBox.classList.remove('hidden');
+                };
+                reader.readAsDataURL(file);
+            } else {
+                const reader = new FileReader();
+                reader.onload = (e) => {
+                    const content = String(e.target.result || '').slice(0, 18000);
+                    attachedContext = {
+                        name: file.name,
+                        type: 'text',
+                        textContent: content
+                    };
+                    thumb.classList.add('hidden');
+                    badge.classList.remove('hidden');
+                    previewBox.classList.remove('hidden');
+                };
+                reader.readAsText(file);
+            }
+            event.target.value = '';
+        }
+
+        function clearAttachment() {
+            attachedContext = null;
+            document.getElementById('attachmentPreview').classList.add('hidden');
+            document.getElementById('attachmentThumb').classList.add('hidden');
+        }
+
+        // ==========================================
+        // VOICE INPUT (SPEECH RECOGNITION)
+        // ==========================================
+        let recognition = null;
+        let isRecording = false;
+
+        function toggleVoiceInput() {
+            const SpeechRec = window.SpeechRecognition || window.webkitSpeechRecognition;
+            if (!SpeechRec) {
+                showToast('Voice input is not supported in this browser.');
+                return;
+            }
+
+            const voiceBtn = document.getElementById('voiceBtn');
+
+            if (isRecording && recognition) {
+                recognition.stop();
+                return;
+            }
+
+            recognition = new SpeechRec();
+            recognition.lang = 'en-US';
+            recognition.interimResults = false;
+            recognition.maxAlternatives = 1;
+
+            recognition.onstart = () => {
+                isRecording = true;
+                voiceBtn.classList.add('text-red-400', 'bg-red-500/15');
+                showToast('Listening... Speak your question 🎤');
+            };
+
+            recognition.onresult = (event) => {
+                const transcript = event.results[0][0].transcript;
+                const input = document.getElementById('promptInput');
+                input.value = (input.value ? input.value + ' ' : '') + transcript;
+                autoResizeTextarea(input);
+                input.focus();
+            };
+
+            recognition.onerror = () => {
+                showToast('Voice capture stopped or permission denied.');
+            };
+
+            recognition.onend = () => {
+                isRecording = false;
+                voiceBtn.classList.remove('text-red-400', 'bg-red-500/15');
+            };
+
+            recognition.start();
+        }
+
+        // ==========================================
+        // COMPOSER CONTROLS
+        // ==========================================
+        function autoResizeTextarea(el) {
+            el.style.height = 'auto';
+            el.style.height = Math.min(el.scrollHeight, 160) + 'px';
+        }
+
+        function handleComposerKeydown(e) {
+            if (e.key === 'Enter' && !e.shiftKey) {
+                e.preventDefault();
+                sendMessage();
+            }
+        }
+
+        function useStarterPrompt(text) {
+            const input = document.getElementById('promptInput');
+            input.value = text;
+            autoResizeTextarea(input);
+            sendMessage();
+        }
+
+        function scrollToBottom() {
+            const container = document.getElementById('chatScrollContainer');
+            requestAnimationFrame(() => {
+                container.scrollTop = container.scrollHeight;
+            });
+        }
+
+        // ==========================================
+        // RICH MARKDOWN PARSER & CODE COPY
+        // ==========================================
+        function escapeHtml(str) {
+            return String(str)
+                .replace(/&/g, '&amp;')
+                .replace(/</g, '&lt;')
+                .replace(/>/g, '&gt;');
+        }
+
+        let codeBlockCounter = 0;
+
+        function renderMarkdown(rawText) {
+            if (!rawText) return '';
+
+            // 1. Extract fenced code blocks first so inner HTML isn't mangled
+            const codeBlocks = [];
+            let text = rawText.replace(/```([a-zA-Z0-9_-]*)\n([\s\S]*?)```/g, (_, lang, code) => {
+                const id = `bezos-code-${++codeBlockCounter}`;
+                const language = lang || 'code';
+                const escapedCode = escapeHtml(code.replace(/\n$/, ''));
+                const blockHtml = `
+                    <div class="code-block-wrapper">
+                        <div class="code-block-header">
+                            <span class="uppercase tracking-wider text-[11px] font-semibold text-indigo-400">${escapeHtml(language)}</span>
+                            <button onclick="copyCodeBlock('${id}', this)" class="flex items-center gap-1.5 px-2 py-1 rounded-md hover:bg-white/10 text-gray-300 hover:text-white transition-colors cursor-pointer">
+                                <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"/></svg>
+                                <span>Copy Code</span>
+                            </button>
+                        </div>
+                        <pre><code id="${id}">${escapedCode}</code></pre>
+                    </div>
+                `;
+                codeBlocks.push(blockHtml);
+                return `@@CODEBLOCK_${codeBlocks.length - 1}@@`;
+            });
+
+            // 2. Escape remaining HTML
+            text = escapeHtml(text);
+
+            // 3. Inline code
+            text = text.replace(/`([^`\n]+)`/g, '<code class="inline-code">$1</code>');
+
+            // 4. Headings
+            text = text.replace(/^### (.*)$/gm, '<h3>$1</h3>');
+            text = text.replace(/^## (.*)$/gm, '<h2>$1</h2>');
+            text = text.replace(/^# (.*)$/gm, '<h1>$1</h1>');
+
+            // 5. Blockquotes
+            text = text.replace(/^&gt; (.*)$/gm, '<blockquote>$1</blockquote>');
+
+            // 6. Bold & Italics
+            text = text.replace(/\*\*\*(.*?)\*\*\*/g, '<strong><em>$1</em></strong>');
+            text = text.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
+            text = text.replace(/\*(.*?)\*/g, '<em>$1</em>');
+
+            // 7. Lists & Paragraphs
+            const lines = text.split('\n');
+            let html = '';
+            let inUl = false;
+            let inOl = false;
+
+            for (let i = 0; i < lines.length; i++) {
+                const line = lines[i];
+                const ulMatch = line.match(/^\s*[-*•]\s+(.*)$/);
+                const olMatch = line.match(/^\s*\d+\.\s+(.*)$/);
+
+                if (ulMatch) {
+                    if (inOl) { html += '</ol>'; inOl = false; }
+                    if (!inUl) { html += '<ul>'; inUl = true; }
+                    html += `<li>${ulMatch[1]}</li>`;
+                } else if (olMatch) {
+                    if (inUl) { html += '</ul>'; inUl = false; }
+                    if (!inOl) { html += '<ol>'; inOl = true; }
+                    html += `<li>${olMatch[1]}</li>`;
+                } else {
+                    if (inUl) { html += '</ul>'; inUl = false; }
+                    if (inOl) { html += '</ol>'; inOl = false; }
+
+                    if (line.startsWith('@@CODEBLOCK_') || line.startsWith('<h') || line.startsWith('<blockquote')) {
+                        html += line;
+                    } else if (line.trim() === '') {
+                        html += '';
+                    } else {
+                        html += `<p>${line}</p>`;
+                    }
+                }
+            }
+            if (inUl) html += '</ul>';
+            if (inOl) html += '</ol>';
+
+            // 8. Restore code blocks
+            html = html.replace(/@@CODEBLOCK_(\d+)@@/g, (_, idx) => codeBlocks[Number(idx)]);
+            return html;
+        }
+
+        function copyCodeBlock(codeId, btn) {
+            const codeEl = document.getElementById(codeId);
+            if (!codeEl) return;
+            const ta = document.createElement('textarea');
+            ta.value = codeEl.textContent;
+            document.body.appendChild(ta);
+            ta.select();
+            document.execCommand('copy');
+            document.body.removeChild(ta);
+
+            const span = btn.querySelector('span');
+            if (span) span.textContent = 'Copied!';
+            showToast('Code copied to clipboard 📋');
+            setTimeout(() => {
+                if (span) span.textContent = 'Copy Code';
+            }, 2000);
+        }
+
+        // ==========================================
+        // MESSAGE UI & ACTIONS
+        // ==========================================
+        function appendMessageElement(role, content, attachmentName = null, msgIndex = 0) {
+            const feed = document.getElementById('messagesFeed');
+            const wrapper = document.createElement('div');
+            wrapper.className = 'animate-msg w-full';
+
+            if (role === 'user') {
+                wrapper.innerHTML = `
+                    <div class="flex justify-end">
+                        <div class="max-w-[88%] sm:max-w-[78%] rounded-2xl rounded-tr-sm px-4 py-3 shadow-sm" style="background-color: var(--user-bubble); border: 1px solid var(--border-subtle);">
+                            ${attachmentName ? `<div class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-indigo-500/15 text-indigo-400 text-[11px] font-semibold mb-1.5">📎 ${escapeHtml(attachmentName)}</div>` : ''}
+                            <div class="text-sm sm:text-[15px] text-primary-custom whitespace-pre-wrap leading-relaxed">${escapeHtml(content)}</div>
+                        </div>
+                    </div>
+                `;
+            } else {
+                wrapper.innerHTML = `
+                    <div class="flex items-start gap-3 sm:gap-3.5">
+                        <div class="w-8 h-8 rounded-xl bezos-gradient-bg flex items-center justify-center text-white shrink-0 mt-0.5 shadow-md">
+                            <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z"/>
+                            </svg>
+                        </div>
+                        <div class="flex-1 min-w-0">
+                            <div class="flex items-center gap-2 mb-1">
+                                <span class="text-xs font-bold text-primary-custom">BEZOS AI</span>
+                                <span class="px-1.5 py-0.2 text-[9px] font-bold uppercase rounded bg-indigo-500/15 text-indigo-400">Bezos 2.0</span>
+                            </div>
+                            <div class="prose-bezos text-primary-custom ai-content-body">${renderMarkdown(content)}</div>
+                            <div class="flex flex-wrap items-center gap-1.5 mt-3 pt-1">
+                                <button onclick="copyFullResponse(this)" class="px-2.5 py-1 rounded-lg bg-surface-custom bg-surface-hover text-[11px] font-medium text-secondary-custom hover:text-primary-custom flex items-center gap-1 transition-colors cursor-pointer">
+                                    <span>📋 Copy</span>
+                                </button>
+                                <button onclick="readResponseAloud(this)" class="px-2.5 py-1 rounded-lg bg-surface-custom bg-surface-hover text-[11px] font-medium text-secondary-custom hover:text-primary-custom flex items-center gap-1 transition-colors cursor-pointer">
+                                    <span>🔊 Read Aloud</span>
+                                </button>
+                                <button onclick="regenerateResponse(${msgIndex})" class="px-2.5 py-1 rounded-lg bg-surface-custom bg-surface-hover text-[11px] font-medium text-secondary-custom hover:text-primary-custom flex items-center gap-1 transition-colors cursor-pointer">
+                                    <span>🔄 Regenerate</span>
+                                </button>
+                                <button onclick="rateFeedback(this, 'up')" class="px-2 py-1 rounded-lg bg-surface-custom bg-surface-hover text-[11px] text-secondary-custom hover:text-emerald-400 transition-colors cursor-pointer" title="Helpful">👍</button>
+                                <button onclick="rateFeedback(this, 'down')" class="px-2 py-1 rounded-lg bg-surface-custom bg-surface-hover text-[11px] text-secondary-custom hover:text-red-400 transition-colors cursor-pointer" title="Needs improvement">👎</button>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }
+
+            feed.appendChild(wrapper);
+            return wrapper;
+        }
+
+        function copyFullResponse(btn) {
+            const body = btn.closest('.flex-1').querySelector('.ai-content-body');
+            if (!body) return;
+            const ta = document.createElement('textarea');
+            ta.value = body.innerText;
+            document.body.appendChild(ta);
+            ta.select();
+            document.execCommand('copy');
+            document.body.removeChild(ta);
+            showToast('Response copied 📋');
+        }
+
+        function readResponseAloud(btn) {
+            const body = btn.closest('.flex-1').querySelector('.ai-content-body');
+            if (!body || !('speechSynthesis' in window)) {
+                showToast('Text-to-speech unavailable in this browser.');
+                return;
+            }
+            window.speechSynthesis.cancel();
+            const utterance = new SpeechSynthesisUtterance(body.innerText);
+            utterance.rate = 1.02;
+            window.speechSynthesis.speak(utterance);
+            showToast('Reading aloud... 🔊');
+        }
+
+        function rateFeedback(btn, dir) {
+            btn.classList.add(dir === 'up' ? 'text-emerald-400' : 'text-red-400');
+            showToast(dir === 'up' ? 'Feedback recorded: Helpful 👍' : 'Feedback recorded: Will improve 👎');
+        }
+
+        // ==========================================
+        // ONLINE AI ENGINE (GEMINI 2.5 FLASH + FALLBACK)
+        // ==========================================
+        function stopGeneration() {
+            abortGenerationFlag = true;
+            isGenerating = false;
+            document.getElementById('stopGeneratingBar').classList.add('hidden');
+            document.getElementById('stopGeneratingBar').classList.remove('flex');
+            document.getElementById('sendBtn').disabled = false;
+        }
+
+        async function regenerateResponse(aiMsgIndex) {
+            if (isGenerating) return;
+            const chat = chats.find(c => c.id === activeChatId);
+            if (!chat || aiMsgIndex < 1) return;
+
+            // Trim conversation back to the user prompt right before this AI message
+            chat.messages = chat.messages.slice(0, aiMsgIndex);
+            saveChatsToStorage();
+            loadChat(chat.id);
+            await generateAssistantReply(chat, null);
+        }
+
+        async function sendMessage() {
+            if (isGenerating) return;
+            const input = document.getElementById('promptInput');
+            const rawText = input.value.trim();
+            if (!rawText && !attachedContext) return;
+
+            // Create chat if none active
+            if (!activeChatId) {
+                activeChatId = Date.now().toString();
+                chats.unshift({
+                    id: activeChatId,
+                    title: (rawText || attachedContext.name).slice(0, 42),
+                    updatedAt: Date.now(),
+                    messages: []
+                });
+            }
+
+            const chat = chats.find(c => c.id === activeChatId);
+            if (chat.messages.length === 0) {
+                chat.title = (rawText || attachedContext.name).slice(0, 42);
+            }
+
+            const displayPrompt = rawText || `Analyze attached file: ${attachedContext.name}`;
+            const currentAttachment = attachedContext ? { ...attachedContext } : null;
+
+            // Construct enriched prompt text for history
+            let enrichedUserText = displayPrompt;
+            if (currentAttachment && currentAttachment.type === 'text') {
+                enrichedUserText += `\n\n[Attached File: ${currentAttachment.name}]\n\`\`\`\n${currentAttachment.textContent}\n\`\`\``;
+            }
+
+            chat.messages.push({
+                role: 'user',
+                content: displayPrompt,
+                apiText: enrichedUserText,
+                attachmentName: currentAttachment ? currentAttachment.name : null
+            });
+            chat.updatedAt = Date.now();
+            saveChatsToStorage();
+
+            // Update UI
+            document.getElementById('welcomeHero').classList.add('hidden');
+            appendMessageElement('user', displayPrompt, currentAttachment ? currentAttachment.name : null, chat.messages.length - 1);
+
+            input.value = '';
+            input.style.height = 'auto';
+            clearAttachment();
+            scrollToBottom();
+
+            await generateAssistantReply(chat, currentAttachment);
+        }
+
+        async function generateAssistantReply(chat, imageAttachment) {
+            isGenerating = true;
+            abortGenerationFlag = false;
+            document.getElementById('sendBtn').disabled = true;
+            document.getElementById('stopGeneratingBar').classList.remove('hidden');
+            document.getElementById('stopGeneratingBar').classList.add('flex');
+
+            // Create live AI thinking/streaming placeholder
+            const feed = document.getElementById('messagesFeed');
+            const aiMsgIndex = chat.messages.length;
+            const aiNode = document.createElement('div');
+            aiNode.className = 'animate-msg w-full';
+            aiNode.innerHTML = `
+                <div class="flex items-start gap-3 sm:gap-3.5">
+                    <div class="w-8 h-8 rounded-xl bezos-gradient-bg flex items-center justify-center text-white shrink-0 mt-0.5 shadow-md">
+                        <svg class="w-4 h-4 animate-spin" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M12 2v4m0 12v4M4.93 4.93l2.83 2.83m8.48 8.48l2.83 2.83M2 12h4m12 0h4M4.93 19.07l2.83-2.83m8.48-8.48l2.83-2.83"/></svg>
+                    </div>
+                    <div class="flex-1 min-w-0">
+                        <div class="flex items-center gap-2 mb-1.5">
+                            <span class="text-xs font-bold text-primary-custom">BEZOS AI</span>
+                            <span class="px-1.5 py-0.2 text-[9px] font-bold uppercase rounded bg-indigo-500/15 text-indigo-400">Bezos 2.0</span>
+                            <span class="text-[11px] text-muted-custom live-status-label">Reasoning online...</span>
+                        </div>
+                        <div class="prose-bezos text-primary-custom ai-content-body">
+                            <div class="flex items-center gap-1.5 py-2">
+                                <span class="typing-dot"></span>
+                                <span class="typing-dot"></span>
+                                <span class="typing-dot"></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `;
+            feed.appendChild(aiNode);
+            scrollToBottom();
+
+            const contentTarget = aiNode.querySelector('.ai-content-body');
+            const statusLabel = aiNode.querySelector('.live-status-label');
+            const spinnerIcon = aiNode.querySelector('svg');
+
+            let finalResponseText = '';
+
+            try {
+                // Build multi-turn Gemini payload (last 12 turns for context)
+                const recentTurns = chat.messages.slice(-12);
+                const contents = recentTurns.map((m, idx) => {
+                    const parts = [{ text: m.apiText || m.content }];
+                    if (idx === recentTurns.length - 1 && imageAttachment && imageAttachment.type === 'image') {
+                        parts.push({
+                            inlineData: {
+                                mimeType: imageAttachment.mimeType,
+                                data: imageAttachment.imageBase64
+                            }
+                        });
+                    }
+                    return {
+                        role: m.role === 'user' ? 'user' : 'model',
+                        parts
+                    };
+                });
+
+                const payload = {
+                    contents,
+                    systemInstruction: {
+                        parts: [{ text: MODEL_PERSONAS[currentModelMode] || MODEL_PERSONAS.omni }]
+                    }
+                };
+
+                // Exponential backoff retry on Gemini 2.5 Flash
+                let geminiSuccess = false;
+                let delay = 1000;
+                for (let attempt = 0; attempt < 3; attempt++) {
+                    if (abortGenerationFlag) break;
+                    try {
+                        const res = await fetch(GEMINI_ENDPOINT, {
+                            method: 'POST',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify(payload)
+                        });
+                        if (!res.ok) throw new Error(`Gemini HTTP ${res.status}`);
+                        const data = await res.json();
+                        const candidateText = data?.candidates?.[0]?.content?.parts?.[0]?.text;
+                        if (candidateText) {
+                            finalResponseText = candidateText;
+                            geminiSuccess = true;
+                            break;
+                        }
+                    } catch (err) {
+                        if (attempt < 2) {
+                            await new Promise(r => setTimeout(r, delay));
+                            delay *= 2;
+                        }
+                    }
+                }
+
+                // Resilient Automatic Fallback to Pollinations Online Text API
+                if (!geminiSuccess && !abortGenerationFlag) {
+                    statusLabel.textContent = 'Connecting via secondary online node...';
+                    const lastUserMsg = recentTurns[recentTurns.length - 1];
+                    const fallbackPrompt = `${MODEL_PERSONAS[currentModelMode]}\n\nUser Question: ${lastUserMsg.apiText || lastUserMsg.content}`;
+                    const pollRes = await fetch('https://text.pollinations.ai/' + encodeURIComponent(fallbackPrompt), {
+                        method: 'GET',
+                        headers: { 'Accept': 'text/plain' }
+                    });
+                    if (!pollRes.ok) throw new Error('Fallback node unreachable');
+                    const pollText = await pollRes.text();
+                    if (!pollText || pollText.trim().length < 2) throw new Error('Empty fallback response');
+                    finalResponseText = pollText.trim();
+                }
+            } catch (networkErr) {
+                // Smart Local Handling if completely offline
+                const lastQ = chat.messages[chat.messages.length - 1]?.content || '';
+                finalResponseText = buildSmartLocalFallback(lastQ);
+            }
+
+            if (abortGenerationFlag) {
+                aiNode.remove();
+                return;
+            }
+
+            // Smooth Streaming Reveal Animation
+            statusLabel.textContent = 'Streaming response...';
+            const totalLen = finalResponseText.length;
+            const stepSize = Math.max(4, Math.ceil(totalLen / 95));
+
+            for (let i = stepSize; i <= totalLen; i += stepSize) {
+                if (abortGenerationFlag) break;
+                contentTarget.innerHTML = renderMarkdown(finalResponseText.slice(0, i));
+                if (i % (stepSize * 6) === 0) scrollToBottom();
+                await new Promise(r => setTimeout(r, 12));
+            }
+
+            // Render final complete message & replace node with full action bar
+            chat.messages.push({
+                role: 'assistant',
+                content: finalResponseText
+            });
+            chat.updatedAt = Date.now();
+            saveChatsToStorage();
+
+            aiNode.remove();
+            appendMessageElement('assistant', finalResponseText, null, aiMsgIndex);
+            scrollToBottom();
+
+            if (autoSpeakEnabled && 'speechSynthesis' in window) {
+                window.speechSynthesis.cancel();
+                const u = new SpeechSynthesisUtterance(finalResponseText.replace(/[#*`]/g, ''));
+                window.speechSynthesis.speak(u);
+            }
+
+            isGenerating = false;
+            document.getElementById('sendBtn').disabled = false;
+            document.getElementById('stopGeneratingBar').classList.add('hidden');
+            document.getElementById('stopGeneratingBar').classList.remove('flex');
+        }
+
+        function buildSmartLocalFallback(query) {
+            return `### BEZOS AI (Bezos 2.0) — Offline Continuity Mode\n\nI received your question: **"${escapeHtml(query)}"**\n\nIt looks like your current network connection blocked external AI servers, so **Bezos 2.0** switched to local continuity mode:\n\n- **Check Internet Connection:** Ensure Wi-Fi or mobile data is active so Bezos 2.0 can query live global knowledge.\n- **Retry Anytime:** Click **🔄 Regenerate** below as soon as you're back online for a full live answer.\n- **Local Tools Active:** You can still use **Voice Input**, **Code/Text File Inspection**, and **Markdown Export** right inside this workspace.`;
+        }
+    </script>
+</body>
+</html>
